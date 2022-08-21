@@ -1,5 +1,6 @@
 package org.example;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,7 +15,7 @@ public class SearchFieldTest {
 
     @Test
     public void checkIncorrectText() {
-        System.setProperty("webdriver.chrome.driver", "..\\webdriver\\chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
 
         WebDriver webDriver = new ChromeDriver();
         webDriver.get("https://www.amazon.com/");
@@ -42,7 +43,7 @@ public class SearchFieldTest {
 
     @Test
     public void checkSearchItem() {
-        System.setProperty("webdriver.chrome.driver", "..\\webdriver\\chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
 
         WebDriver webDriver = new ChromeDriver();
         webDriver.get("https://www.amazon.com/");
@@ -66,7 +67,7 @@ public class SearchFieldTest {
 
     @Test
     public void checkFoundElementsContainsSearchedWord() {
-        System.setProperty("webdriver.chrome.driver", "..\\webdriver\\chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
 
         WebDriver webDriver = new ChromeDriver();
         webDriver.get("https://www.amazon.com/");
