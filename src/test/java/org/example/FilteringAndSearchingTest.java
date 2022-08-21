@@ -27,10 +27,10 @@ public class FilteringAndSearchingTest {
         webDriver.get("https://www.amazon.com" + categoryPath);
     }
 
-    /*@AfterTest
+    @AfterTest
     public void after(){
         webDriver.quit();
-    }*/
+    }
 
     @DataProvider(name = "brandNames")
     public Object[][] brandNames() {
