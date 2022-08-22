@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 public class FilteringAndSearchingTest {
     private WebDriver webDriver;
-    private WebElement brandNameCheckbox;
 
     @BeforeTest
     public void before() {
@@ -28,8 +27,9 @@ public class FilteringAndSearchingTest {
                 + "=fx882&pf_rd_p=12129333-2117-4490-9c17-6d31baf0582a&pf_rd_r=XYWA244WM0H05HEYD0RE&ref=pd_gw_unk";
         webDriver.get("https://www.amazon.com" + categoryPath);
 
-        WebElement brandsExpander = webDriver.findElements(By.xpath("//a[contains(@class,\"a-expander-header\")]")).get(1);
-        brandsExpander.click();
+        WebElement brandsExpander = webDriver.findElement(By.xpath("(//a[contains(@class,\"a-expander-header\")])[2]"));
+        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+        js.executeScript("arguments[0].click();", brandsExpander);
     }
 
     @AfterTest
@@ -46,8 +46,7 @@ public class FilteringAndSearchingTest {
 
     @Test(dataProvider = "brandNames")
     public void verifyTitlesContainChosenBrand(String brandName) {
-        brandNameCheckbox = webDriver.findElement(By.xpath("//span[text() = '" + brandName + "']"));
-        brandNameCheckbox.click();
+        selectBrand(brandName);
 
         boolean anyTitleContainsInputWord = verifyAnyTitleContainsBrandName(brandName);
 
@@ -63,10 +62,10 @@ public class FilteringAndSearchingTest {
 
     @Test(dataProvider = "brandNamesAndPriceRanges")
     public void verifyProductsPricesAreInDefinedRange(String brandName, float minPrice, float maxPrice) {
-        brandNameCheckbox = webDriver.findElement(By.xpath("//span[text() = '" + brandName + "']"));
-        brandNameCheckbox.click();
+        selectBrand(brandName);
 
-        WebElement minPriceInput = webDriver.findElement(By.id("low-price"));
+        WebElement minPriceInput = new WebDriverWait(webDriver, Duration.ofSeconds(6))
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("low-price")));
         minPriceInput.sendKeys(String.valueOf(minPrice));
 
         WebElement maxPriceInput = webDriver.findElement(By.id("high-price"));
@@ -82,10 +81,11 @@ public class FilteringAndSearchingTest {
 
     @Test(dataProvider = "brandNames")
     public void verifyProductsPricesAreSorted(String brandName) {
-        brandNameCheckbox = webDriver.findElement(By.xpath("//span[text() = '" + brandName + "']"));
-        brandNameCheckbox.click();
+        selectBrand(brandName);
 
-        WebElement searchDropdownList = webDriver.findElement(By.id("a-autoid-0-announce"));
+        WebElement searchDropdownList = new WebDriverWait(webDriver, Duration.ofSeconds(6))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("a-autoid-0-announce")));
+
         searchDropdownList.click();
 
         WebElement selectDropdownList = webDriver.findElement(By.id("s-result-sort-select_1"));
@@ -94,6 +94,12 @@ public class FilteringAndSearchingTest {
         boolean arePricesInAscendingOrder = verifyPricesAreInAscendingOrder();
 
         Assert.assertTrue(arePricesInAscendingOrder, "Prices are not in ascending order");
+    }
+
+    private void selectBrand(String brandName){
+        WebElement brandNameCheckbox = new WebDriverWait(webDriver, Duration.ofSeconds(6))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text() = '" + brandName + "']")));
+        brandNameCheckbox.click();
     }
 
 
