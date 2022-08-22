@@ -23,21 +23,21 @@ public class AddRemoveCartTest {
         webDriver.get("https://www.amazon.com/");
         webDriver.manage().window().maximize();
 
-        WebElement openCategory =
+        WebElement selectionCategory =
                 webDriver.findElement(By.xpath("(//span[@class =\"a-size-small a-color-base truncate-2line\"])[1]"));
-        openCategory.click();
+        selectionCategory.click();
 
-        WebElement item =
+        WebElement selectionItem =
                 webDriver.findElement(By.xpath("(//*[@class = \"a-section aok-relative s-image-fixed-height\"])[1]"));
-        item.click();
+        selectionItem.click();
 
-        WebElement addCart =
+        WebElement additionToCart =
                 webDriver.findElement(By.xpath("//*[@id=\"add-to-cart-button\"]"));
-        addCart.click();
+        additionToCart.click();
     }
 
     @AfterMethod
-    public void after(){
+    public void after() {
         webDriver.close();
         webDriver.quit();
     }
