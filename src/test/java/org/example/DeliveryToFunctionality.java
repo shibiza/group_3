@@ -1,5 +1,6 @@
 package org.example;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,7 +22,8 @@ public class DeliveryToFunctionality {
 
     @BeforeMethod
     public void setup() {
-        System.setProperty("webdriver.chrome.driver", "E:\\it\\java\\web_driver_test\\src\\test\\resources\\webdriver\\chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
+        // System.setProperty("webdriver.chrome.driver", "E:\\it\\java\\web_driver_test\\src\\test\\resources\\webdriver\\chromedriver.exe");
 
         this.webDriver = new ChromeDriver();
         webDriver.get("https://www.amazon.com/");
