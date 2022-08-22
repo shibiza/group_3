@@ -2,6 +2,7 @@ package org.example;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class FilteringAndSearchingTest {
     private WebDriver webDriver;
+    private WebElement brandNameCheckbox;
 
     @BeforeTest
     public void before() {
@@ -25,10 +27,13 @@ public class FilteringAndSearchingTest {
         String categoryPath = "/s?k=gaming+keyboard&pd_rd_r=da8afc49-fa94-41c3-9d45-7e811ac33b10&pd_rd_w=gSHhP&pd_rd_wg"
                 + "=fx882&pf_rd_p=12129333-2117-4490-9c17-6d31baf0582a&pf_rd_r=XYWA244WM0H05HEYD0RE&ref=pd_gw_unk";
         webDriver.get("https://www.amazon.com" + categoryPath);
+
+        WebElement brandsExpander = webDriver.findElements(By.xpath("//a[contains(@class,\"a-expander-header\")]")).get(1);
+        brandsExpander.click();
     }
 
     @AfterTest
-    public void after(){
+    public void after() {
         webDriver.quit();
     }
 
@@ -41,13 +46,62 @@ public class FilteringAndSearchingTest {
 
     @Test(dataProvider = "brandNames")
     public void verifyTitlesContainChosenBrand(String brandName) {
-        WebElement brandNameCheckbox = webDriver.findElement(By.xpath("//span[text() = '" + brandName + "']"));
+        brandNameCheckbox = webDriver.findElement(By.xpath("//span[text() = '" + brandName + "']"));
         brandNameCheckbox.click();
+
+        boolean anyTitleContainsInputWord = verifyAnyTitleContainsBrandName(brandName);
+
+        Assert.assertTrue(anyTitleContainsInputWord, "Not every title contains chosen brand name");
+    }
+
+    @DataProvider(name = "brandNamesAndPriceRanges")
+    public Object[][] brandNamesAndPriceRanges() {
+        return new Object[][]{
+                {"Corsair", 50, 250}
+        };
+    }
+
+    @Test(dataProvider = "brandNamesAndPriceRanges")
+    public void verifyProductsPricesAreInDefinedRange(String brandName, float minPrice, float maxPrice) {
+        brandNameCheckbox = webDriver.findElement(By.xpath("//span[text() = '" + brandName + "']"));
+        brandNameCheckbox.click();
+
+        WebElement minPriceInput = webDriver.findElement(By.id("low-price"));
+        minPriceInput.sendKeys(String.valueOf(minPrice));
+
+        WebElement maxPriceInput = webDriver.findElement(By.id("high-price"));
+        maxPriceInput.sendKeys(String.valueOf(maxPrice));
+
+        WebElement submitPriceRangeBtn = webDriver.findElement(By.xpath("//input[@aria-labelledby='a-autoid-1-announce']"));
+        submitPriceRangeBtn.click();
+
+        boolean arePricesInChosenRange = verifyPricesAreInChoseRange(minPrice, maxPrice);
+
+        Assert.assertTrue(arePricesInChosenRange, "Prices are not within specified range");
+    }
+
+    @Test(dataProvider = "brandNames")
+    public void verifyProductsPricesAreSorted(String brandName) {
+        brandNameCheckbox = webDriver.findElement(By.xpath("//span[text() = '" + brandName + "']"));
+        brandNameCheckbox.click();
+
+        WebElement searchDropdownList = webDriver.findElement(By.id("a-autoid-0-announce"));
+        searchDropdownList.click();
+
+        WebElement selectDropdownList = webDriver.findElement(By.id("s-result-sort-select_1"));
+        selectDropdownList.click();
+
+        boolean arePricesInAscendingOrder = verifyPricesAreInAscendingOrder();
+
+        Assert.assertTrue(arePricesInAscendingOrder, "Prices are not in ascending order");
+    }
+
+
+    private boolean verifyAnyTitleContainsBrandName(String brandName) {
+        boolean anyTitleContainsInputWord = false;
 
         int numOfPages = webDriver.findElements(By.xpath("//span[@class='s-pagination-strip']/span[4]")).isEmpty() ?
                 1 : Integer.parseInt(webDriver.findElement(By.xpath("//span[@class='s-pagination-strip']/span[4]")).getText());
-
-        boolean anyTitleContainsInputWord = false;
 
         for (int i = 1; i <= numOfPages; i++) {
 //checking if every title of the page contains brand name
@@ -69,35 +123,14 @@ public class FilteringAndSearchingTest {
                 nextButton.click();
             }
         }
-
-        Assert.assertTrue(anyTitleContainsInputWord, "Not every title contains chosen brand name");
+        return anyTitleContainsInputWord;
     }
 
-    @DataProvider(name = "brandNamesAndPriceRanges")
-    public Object[][] brandNamesAndPriceRanges() {
-        return new Object[][]{
-                {"Corsair", 50, 250}
-        };
-    }
-
-    @Test(dataProvider = "brandNamesAndPriceRanges")
-    public void verifyProductsPricesAreInDefinedRange(String brandName, float minPrice, float maxPrice) {
-        WebElement brandNameCheckbox = webDriver.findElement(By.xpath("//span[text() = '" + brandName + "']"));
-        brandNameCheckbox.click();
-
-        WebElement minPriceInput = webDriver.findElement(By.id("low-price"));
-        minPriceInput.sendKeys(String.valueOf(minPrice));
-
-        WebElement maxPriceInput = webDriver.findElement(By.id("high-price"));
-        maxPriceInput.sendKeys(String.valueOf(maxPrice));
-
-        WebElement submitPriceRangeBtn = webDriver.findElement(By.xpath("//input[@aria-labelledby='a-autoid-1-announce']"));
-        submitPriceRangeBtn.click();
+    private boolean verifyPricesAreInChoseRange(float minPrice, float maxPrice) {
+        boolean arePricesInChosenRange = false;
 
         int numOfPages = webDriver.findElements(By.xpath("//span[@class='s-pagination-strip']/span[4]")).isEmpty() ?
                 1 : Integer.parseInt(webDriver.findElement(By.xpath("//span[@class='s-pagination-strip']/span[4]")).getText());
-
-        boolean arePricesInChosenRange = false;
 
         for (int i = 1; i <= numOfPages; i++) {
 //checking if prices are within specified range
@@ -120,25 +153,15 @@ public class FilteringAndSearchingTest {
                 nextButton.click();
             }
         }
-
-        Assert.assertTrue(arePricesInChosenRange, "Prices are not within specified range");
+        return arePricesInChosenRange;
     }
 
-    @Test(dataProvider = "brandNames")
-    public void verifyProductsPricesAreSorted(String brandName) {
-        WebElement brandNameCheckbox = webDriver.findElement(By.xpath("//span[text() = '" + brandName + "']"));
-        brandNameCheckbox.click();
-
-        WebElement searchDropdownList = webDriver.findElement(By.id("a-autoid-0-announce"));
-        searchDropdownList.click();
-
-        WebElement selectDropdownList = webDriver.findElement(By.id("s-result-sort-select_1"));
-        selectDropdownList.click();
+    private boolean verifyPricesAreInAscendingOrder() {
+        boolean arePricesInAscendingOrder = false;
 
         int numOfPages = webDriver.findElements(By.xpath("//span[@class='s-pagination-strip']/span[4]")).isEmpty() ?
                 1 : Integer.parseInt(webDriver.findElement(By.xpath("//span[@class='s-pagination-strip']/span[4]")).getText());
 
-        boolean arePricesInAscendingOrder = false;
 
         for (int i = 1; i <= numOfPages; i++) {
             List<Float> prices = webDriver.findElements(By.xpath("//span[@class=\"a-price\"]/span[@class=\"a-offscreen\"]"))
@@ -160,8 +183,7 @@ public class FilteringAndSearchingTest {
                 nextButton.click();
             }
         }
-
-        Assert.assertTrue(arePricesInAscendingOrder, "Prices are not in ascending order");
+        return arePricesInAscendingOrder;
     }
 
     private boolean verifyPricesInAscendingOrder(List<Float> prices) {
