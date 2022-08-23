@@ -32,10 +32,10 @@ public class FilteringAndSearchingTest {
         js.executeScript("arguments[0].click();", brandsExpander);
     }
 
-    @AfterTest
+    /*@AfterTest
     public void after() {
         webDriver.quit();
-    }
+    }*/
 
     @DataProvider(name = "brandNames")
     public Object[][] brandNames() {
@@ -48,7 +48,7 @@ public class FilteringAndSearchingTest {
     public void verifyTitlesContainChosenBrand(String brandName) {
         selectBrand(brandName);
 
-        boolean anyTitleContainsInputWord = verifyAnyTitleContainsBrandName(brandName);
+        boolean anyTitleContainsInputWord = verifyEveryTitleContainsBrandName(brandName);
 
         Assert.assertTrue(anyTitleContainsInputWord, "Not every title contains chosen brand name");
     }
@@ -80,97 +80,96 @@ public class FilteringAndSearchingTest {
     }
 
     @Test(dataProvider = "brandNames")
-    public void verifyProductsPricesAreSorted(String brandName) {
+    public void verifyProductsPricesAreSortedAscendingly(String brandName) {
         selectBrand(brandName);
 
-        WebElement searchDropdownList = new WebDriverWait(webDriver, Duration.ofSeconds(6))
+        WebElement sortingDropdownList = new WebDriverWait(webDriver, Duration.ofSeconds(6))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("a-autoid-0-announce")));
 
-        searchDropdownList.click();
+        sortingDropdownList.click();
 
-        WebElement selectDropdownList = webDriver.findElement(By.id("s-result-sort-select_1"));
-        selectDropdownList.click();
+        WebElement lowToHighDropdownSelection = webDriver.findElement(By.id("s-result-sort-select_1"));
+        lowToHighDropdownSelection.click();
 
         boolean arePricesInAscendingOrder = verifyPricesAreInAscendingOrder();
 
         Assert.assertTrue(arePricesInAscendingOrder, "Prices are not in ascending order");
     }
 
-    private void selectBrand(String brandName){
+    private void selectBrand(String brandName) {
         WebElement brandNameCheckbox = new WebDriverWait(webDriver, Duration.ofSeconds(6))
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text() = '" + brandName + "']")));
         brandNameCheckbox.click();
     }
 
 
-    private boolean verifyAnyTitleContainsBrandName(String brandName) {
-        boolean anyTitleContainsInputWord = false;
+    private boolean verifyEveryTitleContainsBrandName(String brandName) {
+        WebElement paginationNextBtn;
+        boolean everyTitleContainsInputWord;
 
-        int numOfPages = webDriver.findElements(By.xpath("//span[@class='s-pagination-strip']/span[4]")).isEmpty() ?
-                1 : Integer.parseInt(webDriver.findElement(By.xpath("//span[@class='s-pagination-strip']/span[4]")).getText());
+        while (true) {
+            paginationNextBtn = new WebDriverWait(webDriver, Duration.ofSeconds(6))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'s-pagination-next')]")));
 
-        for (int i = 1; i <= numOfPages; i++) {
 //checking if every title of the page contains brand name
-            anyTitleContainsInputWord = webDriver.findElements(By.xpath("//div[contains(@class,'s-card-container')]//span[contains(@class,'a-size-medium')]"))
+            everyTitleContainsInputWord = webDriver.findElements(By.xpath("//div[contains(@class,'s-card-container')]//span[contains(@class,'a-size-medium')]"))
                     .stream()
                     .map(WebElement::getText)
                     .map(String::toLowerCase)
                     .allMatch(e -> e.contains(brandName.toLowerCase()));
 
-//if any title doesnt contain brand name, break the loop
-            if (!anyTitleContainsInputWord) {
+            if (!everyTitleContainsInputWord) {
                 break;
             }
 
-//click next button until its not clickable, based on num of pages
-            if (numOfPages != i) {
-                WebElement nextButton = new WebDriverWait(webDriver, Duration.ofSeconds(6))
-                        .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'s-pagination-next')]")));
-                nextButton.click();
+            if (paginationNextBtn.isDisplayed() && !(paginationNextBtn.getAttribute("aria-disabled") == null)) {
+                break;
             }
+
+            paginationNextBtn.click();
         }
-        return anyTitleContainsInputWord;
+        return everyTitleContainsInputWord;
     }
 
     private boolean verifyPricesAreInChoseRange(float minPrice, float maxPrice) {
-        boolean arePricesInChosenRange = false;
+        WebElement paginationNextBtn;
+        boolean arePricesInChosenRange;
 
-        int numOfPages = webDriver.findElements(By.xpath("//span[@class='s-pagination-strip']/span[4]")).isEmpty() ?
-                1 : Integer.parseInt(webDriver.findElement(By.xpath("//span[@class='s-pagination-strip']/span[4]")).getText());
+        while (true) {
+            paginationNextBtn = new WebDriverWait(webDriver, Duration.ofSeconds(6))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'s-pagination-next')]")));
 
-        for (int i = 1; i <= numOfPages; i++) {
-//checking if prices are within specified range
-            arePricesInChosenRange = webDriver.findElements(By.xpath("//span[@class=\"a-price\"]/span[@class=\"a-offscreen\"]"))
+            arePricesInChosenRange = webDriver.findElements(By.xpath("//div[@data-component-type=\"s-search-result\"]//span[@class=\"a-price\"]//span[@class=\"a-offscreen\"]"))
                     .stream()
                     .map(e -> e.getAttribute("textContent").replace("$", ""))
                     .filter(e -> !e.isEmpty())
                     .map(Float::parseFloat)
                     .allMatch(price -> price >= minPrice && price <= maxPrice);
 
-//if any price is out of range, break the loop
             if (!arePricesInChosenRange) {
                 break;
             }
 
-//click next button until its not clickable, based on num of pages
-            if (numOfPages != i) {
-                WebElement nextButton = new WebDriverWait(webDriver, Duration.ofSeconds(6))
-                        .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'s-pagination-next')]")));
-                nextButton.click();
+            if (paginationNextBtn.isDisplayed() && paginationNextBtn.getAttribute("aria-disabled") == null) {
+                paginationNextBtn.click();
+                continue;
             }
+
+            break;
         }
+
         return arePricesInChosenRange;
     }
 
     private boolean verifyPricesAreInAscendingOrder() {
-        boolean arePricesInAscendingOrder = false;
+        WebElement paginationNextBtn;
+        boolean arePricesInAscendingOrder;
 
-        int numOfPages = webDriver.findElements(By.xpath("//span[@class='s-pagination-strip']/span[4]")).isEmpty() ?
-                1 : Integer.parseInt(webDriver.findElement(By.xpath("//span[@class='s-pagination-strip']/span[4]")).getText());
+        while (true) {
+            paginationNextBtn = new WebDriverWait(webDriver, Duration.ofSeconds(6))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'s-pagination-next')]")));
 
-
-        for (int i = 1; i <= numOfPages; i++) {
-            List<Float> prices = webDriver.findElements(By.xpath("//span[@class=\"a-price\"]/span[@class=\"a-offscreen\"]"))
+            List<Float> prices = webDriver.findElements(By.xpath("//div[@data-component-type=\"s-search-result\"]//span[@class=\"a-price\"]//span[@class=\"a-offscreen\"]"))
                     .stream()
                     .map(e -> e.getAttribute("textContent").replace("$", ""))
                     .filter(e -> !e.isEmpty())
@@ -183,12 +182,14 @@ public class FilteringAndSearchingTest {
                 break;
             }
 
-            if (numOfPages != i) {
-                WebElement nextButton = new WebDriverWait(webDriver, Duration.ofSeconds(6))
-                        .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'s-pagination-next')]")));
-                nextButton.click();
+            if (paginationNextBtn.isDisplayed() && paginationNextBtn.getAttribute("aria-disabled") == null) {
+                paginationNextBtn.click();
+                continue;
             }
+
+            break;
         }
+
         return arePricesInAscendingOrder;
     }
 
