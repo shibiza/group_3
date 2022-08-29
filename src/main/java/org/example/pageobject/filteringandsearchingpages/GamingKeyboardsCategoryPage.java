@@ -97,7 +97,7 @@ public class GamingKeyboardsCategoryPage extends BasePage {
         return everyTitleContainsInputWord;
     }
 
-    public boolean verifyPricesAreInChoseRange(float minPrice, float maxPrice) {
+    public boolean verifyPricesAreInChosenRange(float minPrice, float maxPrice) {
         boolean arePricesInChosenRange;
 
         while (true) {

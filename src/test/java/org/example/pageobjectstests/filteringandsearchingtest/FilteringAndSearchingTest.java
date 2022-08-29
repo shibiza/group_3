@@ -39,7 +39,7 @@ public class FilteringAndSearchingTest extends BaseTest{
                 .open()
                 .selectBrand(brandName)
                 .setPriceRange(minPrice, maxPrice)
-                .verifyPricesAreInChoseRange(minPrice, maxPrice);
+                .verifyPricesAreInChosenRange(minPrice, maxPrice);
 
         Assert.assertTrue(arePricesInChosenRange, "Prices are not within specified range");
     }
