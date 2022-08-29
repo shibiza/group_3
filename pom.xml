@@ -32,9 +32,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version><configuration><release>11</release>
-        <compilerArgument>-parameters</compilerArgument>
-      </configuration></plugin></plugins>
+        <version>3.7.0</version>
+        <configuration>
+          <release>11</release>
+          <compilerArgument>-parameters</compilerArgument>
+          <source>14</source>
+          <target>14</target>
+      </configuration>
+      </plugin>
+    </plugins>
   </build>
-
 </project>
