@@ -119,7 +119,7 @@ public class DeliveryToFunctionality {
         WebElement buttonHeadsetsMicro = new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id = 'search']//div[@cel_widget_id= 'MAIN-SEARCH_RESULTS-1']//div[contains(@class, 'a-section')]//div[contains(@class, 'sg-col')]")));
         buttonHeadsetsMicro.click();
 
-        //      checking if tthey ship our item to Poland
+        //      checking if they ship our item to Poland
         WebElement deliveryBox = new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id = 'apex_offerDisplay_single_desktop']//div[@id = 'amazonGlobal_feature_div']")));
         Assert.assertTrue(deliveryBox.getText().contains(poland));
     }
