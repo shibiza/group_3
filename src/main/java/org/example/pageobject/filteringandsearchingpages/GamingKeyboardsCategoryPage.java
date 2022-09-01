@@ -16,6 +16,16 @@ public class GamingKeyboardsCategoryPage extends BasePage {
     private String categoryPath = "/s?k=gaming+keyboard&pd_rd_r=da8afc49-fa94-41c3-9d45-7e811ac33b10&pd_rd_w=gSHhP&pd_rd_wg"
             + "=fx882&pf_rd_p=12129333-2117-4490-9c17-6d31baf0582a&pf_rd_r=XYWA244WM0H05HEYD0RE&ref=pd_gw_unk";
 
+    private String sponsoredSpanXpath = "//span[@class='s-label-popover-default']/span";
+
+    private String biggerPriceTextXpath = "//span[@class='a-price']/span";
+
+    @FindBy(xpath = "//div[@data-component-type='s-search-result']//div[contains(@class,'s-card-container')]")
+    List<WebElement> itemContainers;
+
+    @FindBy(xpath = "//div[contains(@class,'s-card-container')]//span[contains(@class,'a-size-medium')]")
+    List<WebElement> titlesList;
+
     @FindBy(xpath = "(//a[contains(@class,\"a-expander-header\")])[2]")
     private WebElement brandsExpander;
 
@@ -75,16 +85,20 @@ public class GamingKeyboardsCategoryPage extends BasePage {
         boolean everyTitleContainsInputWord;
 
         while (true) {
-            waitForElementVisibility(paginationNextBtn);
-
-            everyTitleContainsInputWord = webDriver.findElements(By.xpath("//div[contains(@class,'s-card-container')]" +
-                    "//span[contains(@class,'a-size-medium')]"))
+            everyTitleContainsInputWord = titlesList
                     .stream()
+                    .filter(e -> e.findElements(By.xpath(sponsoredSpanXpath)).isEmpty())
                     .map(WebElement::getText)
                     .map(String::toLowerCase)
                     .allMatch(e -> e.contains(brandName.toLowerCase()));
 
             if (!everyTitleContainsInputWord) {
+                break;
+            }
+
+            try{
+                waitForElementVisibility(paginationNextBtn);
+            } catch(Exception e){
                 break;
             }
 
@@ -101,17 +115,21 @@ public class GamingKeyboardsCategoryPage extends BasePage {
         boolean arePricesInChosenRange;
 
         while (true) {
-            waitForElementVisibility(paginationNextBtn);
-
-            arePricesInChosenRange = webDriver.findElements(By.xpath("//div[@data-component-type=\"s-search-result\"]" +
-                    "//span[@class=\"a-price\"]//span[@class=\"a-offscreen\"]"))
+            arePricesInChosenRange = itemContainers
                     .stream()
+                    .filter(e -> e.findElements(By.xpath(sponsoredSpanXpath)).isEmpty())
                     .map(e -> e.getAttribute("textContent").replace("$", ""))
                     .filter(e -> !e.isEmpty())
                     .map(Float::parseFloat)
                     .allMatch(price -> price >= minPrice && price <= maxPrice);
 
             if (!arePricesInChosenRange) {
+                break;
+            }
+
+            try{
+                waitForElementVisibility(paginationNextBtn);
+            } catch(Exception e){
                 break;
             }
 
@@ -127,13 +145,13 @@ public class GamingKeyboardsCategoryPage extends BasePage {
 
     public boolean verifyPricesAreInAscendingOrder() {
         boolean arePricesInAscendingOrder;
+        List<Float> prices;
 
         while (true) {
-            waitForElementVisibility(paginationNextBtn);
-
-            List<Float> prices = webDriver.findElements(By.xpath("//div[@data-component-type=\"s-search-result\"]" +
-                    "//span[@class=\"a-price\"]//span[@class=\"a-offscreen\"]"))
+            prices = itemContainers
                     .stream()
+                    .filter(e -> e.findElements(By.xpath(sponsoredSpanXpath)).isEmpty())
+                    .map(e ->  e.findElement(By.xpath(biggerPriceTextXpath)))
                     .map(e -> e.getAttribute("textContent").replace("$", ""))
                     .filter(e -> !e.isEmpty())
                     .map(Float::parseFloat)
@@ -142,6 +160,12 @@ public class GamingKeyboardsCategoryPage extends BasePage {
             arePricesInAscendingOrder = verifyPricesInAscendingOrder(prices);
 
             if (!arePricesInAscendingOrder) {
+                break;
+            }
+
+            try{
+                waitForElementVisibility(paginationNextBtn);
+            } catch(Exception e){
                 break;
             }
 
