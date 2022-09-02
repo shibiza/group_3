@@ -39,10 +39,7 @@ public class HomePage extends BasePage {
         webDriverWait.until(ExpectedConditions.visibilityOf(deliverLocationDropDownModule)).click();
         return new DeliverLocationPopUpModule(webDriver);
     }
-    /*
-    WebElement countryPoland = new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li/a[contains(text(),'" + poland + "')]")));
-            countryPoland.click();
-     */
+
     public SearchResultPage searchOnSearchFieldByData(String searchData) {
         webDriverWait.until(ExpectedConditions.visibilityOf(searchInputField)).click();
         try {

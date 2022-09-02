@@ -31,12 +31,6 @@ public class DeliverLocationPopUpModule extends BasePage {
         super(webDriver);
     }
 
-    //    public String getPostalCodeInputField() {
-//        postalCodeInputField = new WebDriverWait(webDriver, Duration.ofSeconds(10))
-//                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//strong[text()=\"shibiza\"]")));
-//        return postalCodeInputField.getText();
-//
-//    }
     public HomePage inputPostalCodeInDropdownModuleAndClickApplyButton(String postalCode) {
         webDriverWait.until(ExpectedConditions.visibilityOf(postalCodeInputField)).sendKeys(postalCode);
         webDriverWait.until(ExpectedConditions.visibilityOf(applyButton)).click();
