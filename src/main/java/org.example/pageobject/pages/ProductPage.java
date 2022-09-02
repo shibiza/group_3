@@ -12,6 +12,7 @@ public class ProductPage extends BasePage {
     public ProductPage(WebDriver webDriver) {
         super(webDriver);
     }
+
     public String getDeliveryCountry(){
         return deliveryCountry.getText();
     }
