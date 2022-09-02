@@ -1,4 +1,4 @@
-package org.example.pageobject.pages;
+package org.example.pageobject.deliverytofunctionalitypages;
 
 import org.example.pageobject.BasePage;
 import org.openqa.selenium.WebDriver;

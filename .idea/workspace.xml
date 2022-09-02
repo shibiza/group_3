@@ -4,18 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6db7e13-50a5-4258-8fdb-0cf1ad088741" name="Changes" comment="added pages">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="f6db7e13-50a5-4258-8fdb-0cf1ad088741" name="Changes" comment="added directories &quot;delivery to functionality&quot; at src ant test packs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/group_3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/group_3.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/BasePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/BasePage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/HomePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/ProductPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/ProductPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/SearchResultPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/SearchResultPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/modules/DeliverLocationPopUpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/modules/DeliverLocationPopUpModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/DeliveryToFunctionality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/DeliveryToFunctionality.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/deliverytofunctionalitypages/HomePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/ProductPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/deliverytofunctionalitypages/ProductPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/SearchResultPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/deliverytofunctionalitypages/SearchResultPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org.example/pageobject/pages/modules/DeliverLocationPopUpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org.example/pageobject/deliverytofunctionalitypages/modules/DeliverLocationPopUpModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/BaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/pageobjectstests/BaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/DeliveryToFunctionality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/pageobjectstests/DeliveryToFunctionality.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +97,7 @@
       <module name="group_3" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.example.pageobjectstests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -117,7 +114,7 @@
       <module name="group_3" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.example.pageobjectstests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -135,12 +132,12 @@
       <module name="group_3" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.example.pageobjectstests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.DeliveryToFunctionality" />
+      <option name="MAIN_CLASS_NAME" value="org.example.pageobjectstests.DeliveryToFunctionality" />
       <option name="TEST_OBJECT" value="CLASS" />
       <properties />
       <listeners />
@@ -152,12 +149,12 @@
       <module name="group_3" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.example.pageobjectstests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.example" />
-      <option name="MAIN_CLASS_NAME" value="org.example.DeliveryToFunctionality" />
+      <option name="MAIN_CLASS_NAME" value="org.example.pageobjectstests.DeliveryToFunctionality" />
       <option name="METHOD_NAME" value="theDeliverIcon" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
@@ -255,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1661875048383</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="added changes to Home page, module, Test file">
+      <created>1662103922945</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1662103922945</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -280,6 +284,8 @@
     <MESSAGE value="new brunch Samoilik HT till 02/09/2022" />
     <MESSAGE value="enum added" />
     <MESSAGE value="added pages" />
-    <option name="LAST_COMMIT_MESSAGE" value="added pages" />
+    <MESSAGE value="added changes to Home page, module, Test file" />
+    <MESSAGE value="added directories &quot;delivery to functionality&quot; at src ant test packs" />
+    <option name="LAST_COMMIT_MESSAGE" value="added directories &quot;delivery to functionality&quot; at src ant test packs" />
   </component>
 </project>

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.pageobjectstests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.example.factory.WebDriverFactory;

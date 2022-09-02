@@ -1,18 +1,12 @@
-package org.example.pageobject.pages.modules;
+package org.example.pageobject.deliverytofunctionalitypages.modules;
 
 
 import org.example.pageobject.BasePage;
-import org.example.pageobject.pages.HomePage;
-import org.openqa.selenium.By;
+import org.example.pageobject.deliverytofunctionalitypages.HomePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.devtools.v85.runtime.Runtime;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class DeliverLocationPopUpModule extends BasePage {
     @FindBy(id = "GLUXZipUpdateInput")

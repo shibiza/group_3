@@ -1,10 +1,9 @@
 package org.example.pageobject;
 
 import org.example.factory.WebDriverFactory;
-import org.example.pageobject.pages.HomePage;
+import org.example.pageobject.deliverytofunctionalitypages.HomePage;
 import org.openqa.selenium.WebDriver;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Test {

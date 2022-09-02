@@ -1,8 +1,8 @@
-package org.example.pageobject.pages;
+package org.example.pageobject.deliverytofunctionalitypages;
 
 import org.awaitility.Awaitility;
 import org.example.pageobject.BasePage;
-import org.example.pageobject.pages.modules.DeliverLocationPopUpModule;
+import org.example.pageobject.deliverytofunctionalitypages.modules.DeliverLocationPopUpModule;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
