@@ -1,16 +1,16 @@
-package org.example;
+package org.example.addremoveitemintocartTest;
 
 
-import org.org.example.pageobject.Pages.CartPage;
-import org.org.example.pageobject.Pages.HomePage;
-import org.org.example.pageobject.Pages.InformationLabelAddItem;
+import org.org.example.pageobject.addRemoveitemintocart.Pages.CartPage;
+import org.org.example.pageobject.addRemoveitemintocart.Pages.HomePage;
+import org.org.example.pageobject.addRemoveitemintocart.Pages.InformationLabelAddItem;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.org.example.pageobject.Pages.CartPage.VALUE;
-import static org.org.example.pageobject.Pages.CartPage.YOUR_AMAZON_CART_IS_EMPTY;
-import static org.org.example.pageobject.Pages.InformationLabelAddItem.ADDED_TO_CART;
-import static org.org.example.pageobject.Pages.InformationLabelAddItem.CART_COUNT;
+import static org.org.example.pageobject.addRemoveitemintocart.Pages.CartPage.VALUE;
+import static org.org.example.pageobject.addRemoveitemintocart.Pages.CartPage.YOUR_AMAZON_CART_IS_EMPTY;
+import static org.org.example.pageobject.addRemoveitemintocart.Pages.InformationLabelAddItem.ADDED_TO_CART;
+import static org.org.example.pageobject.addRemoveitemintocart.Pages.InformationLabelAddItem.CART_COUNT;
 
 
 public class AddRemoveToCartTest extends BaseTest {

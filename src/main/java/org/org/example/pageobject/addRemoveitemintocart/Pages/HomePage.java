@@ -1,10 +1,10 @@
-package org.org.example.pageobject.Pages;
+package org.org.example.pageobject.addRemoveitemintocart.Pages;
 
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.org.example.pageobject.BasePage;
+import org.org.example.pageobject.addRemoveitemintocart.BasePage;
 
 public class HomePage extends BasePage {
     @FindBy(xpath = "(//span[@class =\"a-size-small a-color-base truncate-2line\"])[1]")

@@ -1,4 +1,4 @@
-package org.org.example.pageobject;
+package org.org.example.pageobject.addRemoveitemintocart;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;

@@ -1,9 +1,9 @@
-package org.org.example.pageobject.Pages;
+package org.org.example.pageobject.addRemoveitemintocart.Pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.org.example.pageobject.BasePage;
+import org.org.example.pageobject.addRemoveitemintocart.BasePage;
 
 public class InformationLabelAddItem extends BasePage {
     @FindBy(xpath = "//*[@class = \"a-size-medium-plus a-color-base sw-atc-text a-text-bold\"]")

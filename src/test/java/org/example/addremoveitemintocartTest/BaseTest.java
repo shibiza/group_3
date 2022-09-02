@@ -1,4 +1,4 @@
-package org.example;
+package org.example.addremoveitemintocartTest;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 

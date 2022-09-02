@@ -1,9 +1,9 @@
-package org.org.example.pageobject.Pages;
+package org.org.example.pageobject.addRemoveitemintocart.Pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.org.example.pageobject.BasePage;
+import org.org.example.pageobject.addRemoveitemintocart.BasePage;
 
 public class CatalogPage extends BasePage {
     @FindBy(xpath = "(//*[@class = \"a-section aok-relative s-image-fixed-height\"])[1]")
