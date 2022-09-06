@@ -17,7 +17,7 @@ public class FilteringAndSearchingTest extends BaseTest{
     }
 
     @Test(dataProvider = "brandNames")
-    public void verifyTitlesContainChosenBrand(String brandName) {
+    public void verifyTitlesContainChosenBrand(String brandName) throws InterruptedException {
         boolean everyTitleContainsInputWord = gamingKeyboardsCategory
                 .open()
                 .selectBrand(brandName)
@@ -34,7 +34,7 @@ public class FilteringAndSearchingTest extends BaseTest{
     }
 
     @Test(dataProvider = "brandNamesAndPriceRanges")
-    public void verifyProductsPricesAreInDefinedRange(String brandName, float minPrice, float maxPrice) {
+    public void verifyProductsPricesAreInDefinedRange(String brandName, float minPrice, float maxPrice) throws InterruptedException {
         boolean arePricesInChosenRange = gamingKeyboardsCategory
                 .open()
                 .selectBrand(brandName)
@@ -45,7 +45,7 @@ public class FilteringAndSearchingTest extends BaseTest{
     }
 
     @Test(dataProvider = "brandNames")
-    public void verifyProductsPricesAreSortedAscendingly(String brandName) {
+    public void verifyProductsPricesAreSortedAscendingly(String brandName) throws InterruptedException {
         boolean arePricesInAscendingOrder = gamingKeyboardsCategory
                 .open()
                 .selectBrand(brandName)
