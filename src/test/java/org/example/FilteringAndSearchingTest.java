@@ -32,10 +32,10 @@ public class FilteringAndSearchingTest {
         js.executeScript("arguments[0].click();", brandsExpander);
     }
 
-    /*@AfterTest
+    @AfterTest
     public void after() {
         webDriver.quit();
-    }*/
+    }
 
     @DataProvider(name = "brandNames")
     public Object[][] brandNames() {
@@ -48,9 +48,9 @@ public class FilteringAndSearchingTest {
     public void verifyTitlesContainChosenBrand(String brandName) {
         selectBrand(brandName);
 
-        boolean anyTitleContainsInputWord = verifyEveryTitleContainsBrandName(brandName);
+        boolean everyTitleContainsInputWord = verifyEveryTitleContainsBrandName(brandName);
 
-        Assert.assertTrue(anyTitleContainsInputWord, "Not every title contains chosen brand name");
+        Assert.assertTrue(everyTitleContainsInputWord, "Not every title contains chosen brand name");
     }
 
     @DataProvider(name = "brandNamesAndPriceRanges")
@@ -85,7 +85,6 @@ public class FilteringAndSearchingTest {
 
         WebElement sortingDropdownList = new WebDriverWait(webDriver, Duration.ofSeconds(6))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("a-autoid-0-announce")));
-
         sortingDropdownList.click();
 
         WebElement lowToHighDropdownSelection = webDriver.findElement(By.id("s-result-sort-select_1"));
@@ -102,7 +101,6 @@ public class FilteringAndSearchingTest {
         brandNameCheckbox.click();
     }
 
-
     private boolean verifyEveryTitleContainsBrandName(String brandName) {
         WebElement paginationNextBtn;
         boolean everyTitleContainsInputWord;
@@ -112,7 +110,8 @@ public class FilteringAndSearchingTest {
                     .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'s-pagination-next')]")));
 
 //checking if every title of the page contains brand name
-            everyTitleContainsInputWord = webDriver.findElements(By.xpath("//div[contains(@class,'s-card-container')]//span[contains(@class,'a-size-medium')]"))
+            everyTitleContainsInputWord = webDriver.findElements(By.xpath("//div[contains(@class,'s-card-container')]" +
+                    "//span[contains(@class,'a-size-medium')]"))
                     .stream()
                     .map(WebElement::getText)
                     .map(String::toLowerCase)
@@ -139,7 +138,8 @@ public class FilteringAndSearchingTest {
             paginationNextBtn = new WebDriverWait(webDriver, Duration.ofSeconds(6))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'s-pagination-next')]")));
 
-            arePricesInChosenRange = webDriver.findElements(By.xpath("//div[@data-component-type=\"s-search-result\"]//span[@class=\"a-price\"]//span[@class=\"a-offscreen\"]"))
+            arePricesInChosenRange = webDriver.findElements(By.xpath("//div[@data-component-type=\"s-search-result\"]" +
+                    "//span[@class=\"a-price\"]//span[@class=\"a-offscreen\"]"))
                     .stream()
                     .map(e -> e.getAttribute("textContent").replace("$", ""))
                     .filter(e -> !e.isEmpty())
@@ -150,12 +150,11 @@ public class FilteringAndSearchingTest {
                 break;
             }
 
-            if (paginationNextBtn.isDisplayed() && paginationNextBtn.getAttribute("aria-disabled") == null) {
-                paginationNextBtn.click();
-                continue;
+            if (paginationNextBtn.isDisplayed() && !(paginationNextBtn.getAttribute("aria-disabled") == null)) {
+                break;
             }
 
-            break;
+            paginationNextBtn.click();
         }
 
         return arePricesInChosenRange;
@@ -169,7 +168,8 @@ public class FilteringAndSearchingTest {
             paginationNextBtn = new WebDriverWait(webDriver, Duration.ofSeconds(6))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'s-pagination-next')]")));
 
-            List<Float> prices = webDriver.findElements(By.xpath("//div[@data-component-type=\"s-search-result\"]//span[@class=\"a-price\"]//span[@class=\"a-offscreen\"]"))
+            List<Float> prices = webDriver.findElements(By.xpath("//div[@data-component-type=\"s-search-result\"]" +
+                    "//span[@class=\"a-price\"]//span[@class=\"a-offscreen\"]"))
                     .stream()
                     .map(e -> e.getAttribute("textContent").replace("$", ""))
                     .filter(e -> !e.isEmpty())
@@ -182,12 +182,11 @@ public class FilteringAndSearchingTest {
                 break;
             }
 
-            if (paginationNextBtn.isDisplayed() && paginationNextBtn.getAttribute("aria-disabled") == null) {
-                paginationNextBtn.click();
-                continue;
+            if (paginationNextBtn.isDisplayed() && !(paginationNextBtn.getAttribute("aria-disabled") == null)) {
+                break;
             }
 
-            break;
+            paginationNextBtn.click();
         }
 
         return arePricesInAscendingOrder;
@@ -199,6 +198,7 @@ public class FilteringAndSearchingTest {
                 return false;
             }
         }
+
         return true;
     }
 }
