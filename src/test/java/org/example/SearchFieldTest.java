@@ -1,29 +1,11 @@
 package org.example;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.example.pageobject.pages.MainPage;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
-
-public class SearchFieldTest {
-    private WebDriver webDriver;
-
-    @BeforeTest
-    public void before() {
-        WebDriverManager.chromedriver().setup();
-        webDriver = new ChromeDriver();
-        webDriver.get("https://www.amazon.com/");
-        webDriver.manage().window().maximize();
-    }
+public class SearchFieldTest extends BaseTest{
 
     @AfterTest
     public void after() {
@@ -33,51 +15,35 @@ public class SearchFieldTest {
 
     @Test
     public void checkIncorrectText() {
-        String searchIncorrectText = "csihbwuvcougw6789okjndso8ycgwubc8herbvgip";
+        String IncorrectText = "csihbwuvcougw6789okjndso8ycgwubc8herbvgip";
 
-        WebElement searchField = new WebDriverWait(webDriver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("twotabsearchtextbox")));
-        searchField.clear(); // After adding @BeforeTest and @afterTest to the code, you need to clear search field
-        searchField.sendKeys(searchIncorrectText);
+        MainPage mainPage = new MainPage(webDriver);
+        String lackOfResults = mainPage.open()
+                        .searchIncorrectText(IncorrectText).getComment();
 
-        WebElement searchButton = webDriver.findElement(By.id("nav-search-submit-button"));
-        searchButton.click();
-
-        WebElement noResultsComment = new WebDriverWait(webDriver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class=\"s-no-outline\"]")));
-        Assert.assertEquals("No results for " + searchIncorrectText + ".\nTry checking your spelling or use more general terms", noResultsComment.getText());
+        Assert.assertEquals("No results for " + IncorrectText + ".\nTry checking your spelling or use more general terms", lackOfResults);
     }
 
     @Test
     public void checkSearchItem() {
         String searchItem = "laptop";
 
-        WebElement searchField = new WebDriverWait(webDriver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("twotabsearchtextbox")));
-        searchField.clear(); // After adding @BeforeTest and @afterTest to the code, you need to clear search field
-        searchField.sendKeys(searchItem);
+        MainPage mainPage = new MainPage(webDriver);
+        String result = mainPage.open()
+                .searchLaptop(searchItem).getComment();
 
-        WebElement searchButton = webDriver.findElement(By.id("nav-search-submit-button"));
-        searchButton.click();
-
-        WebElement searchingItemIsPresent = new WebDriverWait(webDriver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class=\"a-section a-spacing-small a-spacing-top-small\"]/span[3]")));
-        Assert.assertEquals("\"" + searchItem + "\"", searchingItemIsPresent.getText());
+        Assert.assertEquals("\"" + searchItem + "\"", result);
     }
 
     @Test
     public void checkFoundElementsContainsSearchedWord() {
         String searchItem = "laptop";
 
-        WebElement searchField = new WebDriverWait(webDriver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("twotabsearchtextbox")));
-        searchField.clear(); // After adding @BeforeTest and @afterTest to the code, you need to clear search field
-        searchField.sendKeys(searchItem);
+        MainPage mainPage = new MainPage(webDriver);
+        String checkResults = mainPage.open()
+                .searchLaptopOnPage(searchItem).getComment();
 
-        WebElement searchButton = webDriver.findElement(By.id("nav-search-submit-button"));
-        searchButton.click();
-
-        boolean searchingWordIsPresent = webDriver.findElement(By.xpath("//div[@class=\"s-main-slot s-result-list s-search-results sg-row\"]")).getText().contains(searchItem);
+        boolean searchingWordIsPresent = checkResults.contains(searchItem);
         Assert.assertTrue(searchingWordIsPresent);
     }
 }
