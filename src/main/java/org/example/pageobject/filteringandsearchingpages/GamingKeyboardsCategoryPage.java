@@ -1,9 +1,6 @@
 package org.example.pageobject.filteringandsearchingpages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -98,17 +95,7 @@ public class GamingKeyboardsCategoryPage extends BasePage {
                     .map(String::toLowerCase)
                     .allMatch(e -> e.contains(brandName.toLowerCase()));
 
-            if (!everyTitleContainsInputWord) {
-                break;
-            }
-
-            try {
-                waitForElementVisibility(paginationNextBtn);
-            } catch (Exception e) {
-                break;
-            }
-
-            if (paginationNextBtn.isDisplayed() && !(paginationNextBtn.getAttribute("aria-disabled") == null)) {
+            if(stopGoingThroughPages(everyTitleContainsInputWord, paginationNextBtn)){
                 break;
             }
 
@@ -131,17 +118,7 @@ public class GamingKeyboardsCategoryPage extends BasePage {
                             .getAttribute("textContent").replace("$", "")))
                     .allMatch(price -> price >= minPrice && price <= maxPrice);
 
-            if (!arePricesInChosenRange) {
-                break;
-            }
-
-            try {
-                waitForElementVisibility(paginationNextBtn);
-            } catch (Exception e) {
-                break;
-            }
-
-            if (paginationNextBtn.isDisplayed() && !(paginationNextBtn.getAttribute("aria-disabled") == null)) {
+            if(stopGoingThroughPages(arePricesInChosenRange, paginationNextBtn)){
                 break;
             }
 
@@ -168,17 +145,7 @@ public class GamingKeyboardsCategoryPage extends BasePage {
 
             arePricesInAscendingOrder = verifyPricesInAscendingOrder(prices);
 
-            if (!arePricesInAscendingOrder) {
-                break;
-            }
-
-            try {
-                waitForElementVisibility(paginationNextBtn);
-            } catch (Exception e) {
-                break;
-            }
-
-            if (paginationNextBtn.isDisplayed() && !(paginationNextBtn.getAttribute("aria-disabled") == null)) {
+            if(stopGoingThroughPages(arePricesInAscendingOrder, paginationNextBtn)){
                 break;
             }
 
@@ -188,8 +155,28 @@ public class GamingKeyboardsCategoryPage extends BasePage {
         return arePricesInAscendingOrder;
     }
 
+    private boolean stopGoingThroughPages(boolean condition, WebElement paginationNextBtn){
+        if (!condition) {
+            return true;
+        }
+
+        try{
+            waitForElementVisibility(paginationNextBtn);
+        } catch(NoSuchElementException e){
+            System.err.println("Pagination next button not found");
+            return true;
+        }
+
+        return paginationNextBtn.isDisplayed()
+                && !(paginationNextBtn.getAttribute("aria-disabled") == null);
+    }
+
     private boolean verifyPricesInAscendingOrder(List<Float> prices) {
-        for (int i = 0; i < prices.size() - 2; i++) {
+        if(prices.size() == 1){
+            return true;
+        }
+
+        for (int i = 0; i < prices.size() -1; i++) {
             if (prices.get(i) > prices.get(i + 1)) {
                 return false;
             }
